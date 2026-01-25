@@ -19,6 +19,7 @@ black = "^26.1.0"
 isort = "^7.0.0"
 mypy = "^1.19.1"
 django = "^6.0.1"
+icecream = "^2.1.10"
 
 
 [build-system]
