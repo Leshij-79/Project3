@@ -37,23 +37,28 @@ class Product(models.Model):
         blank=True,
         upload_to='photo/',
         verbose_name='Фотография товара',
+        help_text='Фотография товара',
     )
     category = models.ForeignKey(
         Category,
         on_delete = models.CASCADE,
         related_name='products',
+        help_text='Категория товара',
     )
     price = models.FloatField(
         default=0,
         verbose_name='Цена',
+        help_text='Цена товара',
     )
     created_at = models.DateField(
         auto_now_add=True,
         verbose_name='Дата занесения',
+        help_text='Дата занесения товара',
     )
     updated_at = models.DateField(
         auto_now=True,
         verbose_name='Дата изменения',
+        help_text='Дата изменения товара',
     )
 
 
