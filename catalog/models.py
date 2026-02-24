@@ -61,9 +61,6 @@ class Product(models.Model):
         help_text='Дата изменения товара',
     )
 
-
-
-
     def __str__(self):
         return self.name
 
