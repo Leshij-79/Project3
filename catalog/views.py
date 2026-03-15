@@ -30,16 +30,26 @@ class ContactsFormView(FormView):
 
 
     def post(self, request, *args, **kwargs):
-        if request.method == "POST":
-            name = request.POST.get("name")
-            phone = request.POST.get("phone")
-            message = request.POST.get("message")
-            return HttpResponseRedirect(
-                f"{name}, благодарим за обращение! Ваше сообщение {message} получено. "
-                f"С вами свяжутся по номеру {phone}"
-            )
 
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+        HttpResponseRedirect(
+            f"{name}, благодарим за обращение! Ваше сообщение {message} получено. "
+            f"С вами свяжутся по номеру {phone}"
+        )
         return render(request, "contacts.html")
+
+        # if request.method == "POST":
+        #     name = request.POST.get("name")
+        #     phone = request.POST.get("phone")
+        #     message = request.POST.get("message")
+        #     return HttpResponseRedirect(
+        #         f"{name}, благодарим за обращение! Ваше сообщение {message} получено. "
+        #         f"С вами свяжутся по номеру {phone}"
+        #     )
+        #
+        # return render(request, "contacts.html")
 
 
 # def contacts(request):
