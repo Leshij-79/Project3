@@ -1,9 +1,6 @@
-from django.contrib import messages
-from django import forms
-from django.http import HttpResponse, request, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic import FormView
 from catalog.models import Product
@@ -39,27 +36,3 @@ class ContactsFormView(FormView):
             f"С вами свяжутся по номеру {phone}"
         )
         return render(request, "contacts.html")
-
-        # if request.method == "POST":
-        #     name = request.POST.get("name")
-        #     phone = request.POST.get("phone")
-        #     message = request.POST.get("message")
-        #     return HttpResponseRedirect(
-        #         f"{name}, благодарим за обращение! Ваше сообщение {message} получено. "
-        #         f"С вами свяжутся по номеру {phone}"
-        #     )
-        #
-        # return render(request, "contacts.html")
-
-
-# def contacts(request):
-#     if request.method == "POST":
-#         name = request.POST.get("name")
-#         phone = request.POST.get("phone")
-#         message = request.POST.get("message")
-#         return HttpResponse(
-#             f"{name}, благодарим за обращение! Ваше сообщение {message} получено. "
-#             f"С вами свяжутся по номеру {phone}"
-#         )
-#
-#     return render(request, "contacts.html")
