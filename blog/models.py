@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Blog(models.Model):
     heading = models.CharField(
         max_length=150,
@@ -29,11 +30,8 @@ class Blog(models.Model):
         default=False,
     )
     number_views = models.IntegerField(
-        default=0,
-        verbose_name="Количество просмотров",
-        help_text="Количество просмотров"
+        default=0, verbose_name="Количество просмотров", help_text="Количество просмотров"
     )
-
 
     def __str__(self):
         return self.heading

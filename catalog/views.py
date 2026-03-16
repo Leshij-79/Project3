@@ -1,15 +1,15 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
-from django.views.generic import FormView
+from django.views.generic import DetailView, FormView, ListView
+
 from catalog.models import Product
 
 
 class ProductDetailView(DetailView):
     model = Product
     template_name = "product_detail.html"
-    success_url = reverse_lazy('catalog:product_list')
+    success_url = reverse_lazy("catalog:product_list")
 
 
 class ProductListView(ListView):
@@ -19,12 +19,10 @@ class ProductListView(ListView):
 
 class ContactsFormView(FormView):
     template_name = "contacts.html"
-    success_url = reverse_lazy('catalog:contacts')
-
+    success_url = reverse_lazy("catalog:contacts")
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
-
 
     def post(self, request, *args, **kwargs):
 
