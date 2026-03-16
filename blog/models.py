@@ -9,6 +9,7 @@ class Blog(models.Model):
     )
     content = models.TextField(
         blank=True,
+        verbose_name="Текст блога",
         help_text="Текст поста блога",
     )
     photo_blog = models.ImageField(
@@ -32,3 +33,12 @@ class Blog(models.Model):
         verbose_name="Количество просмотров",
         help_text="Количество просмотров"
     )
+
+
+    def __str__(self):
+        return self.heading
+
+    class Meta:
+        verbose_name = "Блог"
+        verbose_name_plural = "Блоги"
+        ordering = ["heading"]
