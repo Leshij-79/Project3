@@ -12,7 +12,7 @@ class BlogListView(ListView):
 
 class BlogDetailView(DetailView):
     model = Blog
-    fields = ["heading", "content", "photo_blog", ]
+    # fields = ["heading", "content", "photo_blog",]
     template_name = "blog_detail.html"
     success_url = reverse_lazy('blog:blog_list')
 
@@ -32,6 +32,7 @@ class BlogCreateView(CreateView):
 
 class BlogDeleteView(DeleteView):
     model = Blog
+    # fields = ["heading", "content", "photo_blog",]
     template_name = "blog_delete.html"
     success_url = reverse_lazy('blog:blog_list')
 

@@ -15,7 +15,7 @@
         </div>
         <div class="col-12">
             <div class="row text-center">
-                <form>
+                <form method="post">
                     {% csrf_token %}
                     <div class="col-md-12">
                         <div class ="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -36,9 +36,11 @@
                             </div>
                         </div>
                     </div>
-                    <a role="button" class="btn btn-primary" href="{% url 'blog:blog_update' blog.pk %}">Редактировать</a>
-                    <a role="button" class="btn btn-secondory" href="{% url 'blog:blog_delete' blog.pk %}">Удалить</a>
-                    <a role="button" class="btn btn-secondary" href="{% url 'blog:blog_list' %}">Назад</a>
+                    <p>
+                        <h4 class="display-4">Вы действительно хотите удалить блог?</h4>
+                    </p>
+                    <button type="submit" class="btn btn-secondary">Удалить</button>
+                    <a role="button" class="btn btn-primary" href="{% url 'blog:blog_detail' blog.pk %}">Назад</a>
                 </form>
             </div>
         </div>
