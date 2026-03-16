@@ -32,6 +32,7 @@
                         <a href="{% url 'blog:blog_detail' blog.pk %}" class="icon-link gap-1 icon-link-hover stretched-link">Continue reading<svg class="bi" aria-hidden="true">
                             <use xlink:href="#chevron-right"></use>
                         </svg></a>
+                        <p class="mb-0">Количество просмотров: {{ blog.number_views }}</p>
                     </div>
                     <div class="col-auto d-none d-lg-block">
                         <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img" height="250" preserveAspectRatio="xMidYMid slice" role="img"
