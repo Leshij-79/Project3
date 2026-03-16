@@ -29,7 +29,7 @@
                         <p class="mb-auto">
                             <li>{{ blog.content|truncatechars:100 }}</li>
                         </p>
-                        <a href="{% url 'blog:blog_detail' blog.pk %}" class="icon-link gap-1 icon-link-hover stretched-link">Continue reading<svg class="bi" aria-hidden="true">
+                        <a href="{% url 'blog:blog_detail' blog.pk %}" class="icon-link gap-1 icon-link-hover stretched-link"><svg class="bi" aria-hidden="true">
                             <use xlink:href="#chevron-right"></use>
                         </svg></a>
                         <p class="mb-0">Количество просмотров: {{ blog.number_views }}</p>
