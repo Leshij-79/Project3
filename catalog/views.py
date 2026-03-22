@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView, ListView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import DetailView, FormView, ListView, CreateView, DeleteView, UpdateView
 
 from catalog.models import Product
 
@@ -11,10 +11,51 @@ class ProductDetailView(DetailView):
     template_name = "product_detail.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.number_views += 1
+        self.object.save()
+        return self.object
+
 
 class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
+
+    def get_queryset(self):
+        return Product.objects.filter(ispublication=True)
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    # fields = [
+    #     "heading",
+    #     "content",
+    #     "photo_blog",
+    # ]
+    template_name = "product_cu.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = "product_delete.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    # fields = [
+    #     "heading",
+    #     "content",
+    #     "photo_blog",
+    # ]
+    template_name = "product_cu.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+    def get_success_url(self):
+        return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
+
 
 
 class ContactsFormView(FormView):

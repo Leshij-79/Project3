@@ -38,7 +38,6 @@ class BlogCreateView(CreateView):
 
 class BlogDeleteView(DeleteView):
     model = Blog
-    # fields = ["heading", "content", "photo_blog",]
     template_name = "blog_delete.html"
     success_url = reverse_lazy("blog:blog_list")
 
