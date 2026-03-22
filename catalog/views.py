@@ -1,30 +1,36 @@
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, FormView, ListView
 
 from catalog.models import Product
 
 
-def home(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "home.html", context)
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "product_detail.html"
+    success_url = reverse_lazy("catalog:product_list")
 
 
-def product_detail(request, pk):
-    # product = Product.objects.get(pk=pk)
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, "product_detail.html", context)
+class ProductListView(ListView):
+    model = Product
+    template_name = "product_list.html"
 
 
-def contacts(request):
-    if request.method == "POST":
+class ContactsFormView(FormView):
+    template_name = "contacts.html"
+    success_url = reverse_lazy("catalog:contacts")
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         message = request.POST.get("message")
-        return HttpResponse(
+        HttpResponseRedirect(
             f"{name}, благодарим за обращение! Ваше сообщение {message} получено. "
             f"С вами свяжутся по номеру {phone}"
         )
-
-    return render(request, "contacts.html")
+        return render(request, "contacts.html")
