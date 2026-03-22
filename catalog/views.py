@@ -3,11 +3,13 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, FormView, ListView, CreateView, DeleteView, UpdateView
 
+from catalog.forms import ProductDetailForm
 from catalog.models import Product
 
 
 class ProductDetailView(DetailView):
     model = Product
+    form_class = ProductDetailForm
     template_name = "product_detail.html"
     success_url = reverse_lazy("catalog:product_list")
 
@@ -22,17 +24,10 @@ class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
 
-    def get_queryset(self):
-        return Product.objects.filter(ispublication=True)
-
 
 class ProductCreateView(CreateView):
     model = Product
-    # fields = [
-    #     "heading",
-    #     "content",
-    #     "photo_blog",
-    # ]
+    form_class = ProductDetailForm
     template_name = "product_cu.html"
     success_url = reverse_lazy("catalog:product_list")
 
@@ -45,11 +40,7 @@ class ProductDeleteView(DeleteView):
 
 class ProductUpdateView(UpdateView):
     model = Product
-    # fields = [
-    #     "heading",
-    #     "content",
-    #     "photo_blog",
-    # ]
+    form_class = ProductDetailForm
     template_name = "product_cu.html"
     success_url = reverse_lazy("catalog:product_list")
 
