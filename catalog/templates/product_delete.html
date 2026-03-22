@@ -1,13 +1,13 @@
 
 {% extends 'base.html' %}
 {% load tag_filter %}
-{% block title %}Просмотр поста{% endblock %}
+{% block title %}Просмотр продукта{% endblock %}
 
 {% block content %}
 
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1 class="display-4">Блог</h1>
-        <p class="lead">Просмотр блога</p>
+         <h1 class="display-4">Магазин</h1>
+        <p class="lead">Категория {{ product.category }}</p>
     </div>
 
     <div class="container">
@@ -20,27 +20,19 @@
                     <div class="col-md-12">
                         <div class ="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                             <div class="col p-4 d-flex flex-column position-static">
-                                <h3 class="mb-0">{{ blog.heading }}</h3>
-                                <div class="mb-1 text-body-secondary">{{ blog.created_at }}</div>
-                                <p class="mb-auto">
-                                    <li>{{ blog.content }}</li>
-                                </p>
-                                <p class="mb-0">Количество просмотров: {{ blog.number_views }}</p>
-                            </div>
-                            <div class="col-auto d-none d-lg-block">
-                                <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img" height="250" preserveAspectRatio="xMidYMid slice" role="img"
-                                    width="200"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <img src="{{ blog.photo_blog | media_filter }}" class="img-thumbnail" width="400">
-                                </svg>
+                                <img src="{{ product.photo_product | media_filter }}" class="img-thumbnail" width="100">
+                                <h1 class="my-0 font-weight-normal">{{ product.name }}</h1>
+                                <h2>{{ product.description }}</h2>
+                                <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
+                                <p class="mb-0">Количество просмотров: {{ product.number_views }}</p>
                             </div>
                         </div>
                     </div>
                     <p>
-                        <h4 class="display-4">Вы действительно хотите удалить блог?</h4>
+                        <h4 class="display-4">Вы действительно хотите удалить продукт?</h4>
                     </p>
                     <button type="submit" class="btn btn-secondary">Удалить</button>
-                    <a role="button" class="btn btn-primary" href="{% url 'blog:blog_detail' blog.pk %}">Назад</a>
+                    <a role="button" class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}">Назад</a>
                 </form>
             </div>
         </div>

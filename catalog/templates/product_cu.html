@@ -1,11 +1,7 @@
 
 {% extends 'base.html' %}
 {% load tag_filter %}
-{% if object %}
-    {% block title %}Редактирование {{ product.name }}{% endblock %}
-{% else %}
-    {% block title %}Создание продукта{% endblock %}
-{% endif %}
+{% block title %}Карта продукта{% endblock %}
 
 {% block content %}
 
