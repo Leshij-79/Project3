@@ -1,9 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
-from django.views.generic import DetailView, FormView, ListView, CreateView, DeleteView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from catalog.forms import ProductDetailForm, ProductCUForm
+from catalog.forms import ProductCUForm, ProductDetailForm
 from catalog.models import Product
 
 
@@ -46,7 +46,6 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
-
 
 
 class ContactsFormView(FormView):
