@@ -60,6 +60,9 @@ class Product(models.Model):
         verbose_name="Дата изменения",
         help_text="Дата изменения товара",
     )
+    number_views = models.IntegerField(
+        default=0, verbose_name="Количество просмотров", help_text="Количество просмотров"
+    )
 
     def __str__(self):
         return self.name

@@ -15,11 +15,16 @@
         </div>
         <div class="col-4">
             <div class="row text-center">
-                <img src="{{ product.photo_product | media_filter }}" class="img-thumbnail" width="100">
-                <h1 class="my-0 font-weight-normal">{{ product.name }}</h1>
-                <h2>{{ product.description }}</h2>
-                <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
-                <a role="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:product_list' %}">Назад</a>
+                <form>
+                    <img src="{{ product.photo_product | media_filter }}" class="img-thumbnail" width="100">
+                    <h1 class="my-0 font-weight-normal">{{ product.name }}</h1>
+                    <h2>{{ product.description }}</h2>
+                    <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
+                    <p class="mb-0">Количество просмотров: {{ product.number_views }}</p>
+                    <a role="button" class="btn btn-primary" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                    <a role="button" class="btn btn-secondory" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                    <a role="button" class="btn btn-secondary" href="{% url 'catalog:product_list' %}">Назад</a>
+                </form>
             </div>
         </div>
         <div class="col-4">

@@ -1,20 +1,51 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView, ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
+from catalog.forms import ProductCUForm, ProductDetailForm
 from catalog.models import Product
 
 
 class ProductDetailView(DetailView):
     model = Product
+    form_class = ProductDetailForm
     template_name = "product_detail.html"
     success_url = reverse_lazy("catalog:product_list")
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.number_views += 1
+        self.object.save()
+        return self.object
 
 
 class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductCUForm
+    template_name = "product_cu.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = "product_delete.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductCUForm
+    template_name = "product_cu.html"
+    success_url = reverse_lazy("catalog:product_list")
+
+    def get_success_url(self):
+        return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
 
 
 class ContactsFormView(FormView):
