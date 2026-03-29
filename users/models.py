@@ -3,10 +3,9 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True, verbose_name="email")
-    username = None
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ["username", "first_name", "last_name"]
     EMAIL_FIELD = "email"
 
     avatar = models.ImageField(upload_to="media/avatars", blank=True, null=True, verbose_name="Аватар")
