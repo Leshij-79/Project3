@@ -1,10 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from catalog.forms import ProductCUForm, ProductDetailForm
+from catalog.forms import ProductCUForm, ProductDetailForm, ProductCUMForm
 from catalog.models import Product
 
 
@@ -32,14 +33,25 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = "product_cu.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "product_delete.html"
     success_url = reverse_lazy("catalog:product_list")
+    permission_required = 'catalog.can_delete_products'
+
+    def handle_no_permission(self):
+        return HttpResponseForbidden('У вас нет прав на удаление!')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductCUForm
     template_name = "product_cu.html"
@@ -47,6 +59,16 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
+
+    def get_form_class(self):
+        user = self.request.user
+
+        if user ==  self.object.owner:
+            return ProductCUForm
+        if user.has_perms(['catalog.can_unpublish_product',]):
+            return ProductCUMForm
+
+        raise PermissionDenied
 
 
 class ContactsFormView(FormView):
