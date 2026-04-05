@@ -1,11 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from catalog.forms import ProductCUForm, ProductDetailForm, ProductCUMForm
+from catalog.forms import ProductCUForm, ProductCUMForm, ProductDetailForm
 from catalog.models import Product
 
 
@@ -45,10 +45,20 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "product_delete.html"
     success_url = reverse_lazy("catalog:product_list")
-    permission_required = 'catalog.can_delete_products'
+    permission_required = "catalog.can_delete_products"
+
+    def delete_view(self, object_id):
+        obj = get_object_or_404(Product, id=object_id)
+
+        if not self.request.user.groups.filter(name="moderators").exists() or self.object.owner != self.request.user:
+            return HttpResponseForbidden("У вас нет прав для удаления этого объекта.")
+
+        obj.delete()
+
+        return redirect("catalog:product_list")
 
     def handle_no_permission(self):
-        return HttpResponseForbidden('У вас нет прав на удаление!')
+        return HttpResponseForbidden("У вас нет прав на удаление!")
 
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
@@ -63,9 +73,13 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def get_form_class(self):
         user = self.request.user
 
-        if user ==  self.object.owner:
+        if user == self.object.owner:
             return ProductCUForm
-        if user.has_perms(['catalog.can_unpublish_product',]):
+        if user.has_perms(
+            [
+                "catalog.can_unpublish_product",
+            ]
+        ):
             return ProductCUMForm
 
         raise PermissionDenied
