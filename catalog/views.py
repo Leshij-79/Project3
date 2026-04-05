@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -7,7 +8,7 @@ from catalog.forms import ProductCUForm, ProductDetailForm
 from catalog.models import Product
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductDetailForm
     template_name = "product_detail.html"
@@ -25,7 +26,7 @@ class ProductListView(ListView):
     template_name = "product_list.html"
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductCUForm
     template_name = "product_cu.html"
