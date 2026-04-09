@@ -1,14 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
 from catalog.forms import ProductCUForm, ProductCUMForm, ProductDetailForm
 from catalog.models import Product
+from catalog.services import CatalogServices
 
 
+@method_decorator(cache_page(60), name="dispatch")
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductDetailForm
@@ -25,6 +30,13 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
+
+    def get_queryset(self):
+        queryset = cache.get('my_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('my_queryset', queryset, 60)
+        return queryset
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -83,6 +95,22 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return ProductCUMForm
 
         raise PermissionDenied
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = "category_list.html"
+    context_object_name = "all_products"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        category_id = self.object.category
+        context["all_products"] = CatalogServices.all_products(category_id)
+
+        return context
+
+
 
 
 class ContactsFormView(FormView):
