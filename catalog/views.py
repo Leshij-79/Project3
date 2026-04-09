@@ -1,13 +1,15 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from catalog.forms import ProductCUForm, ProductDetailForm
+from catalog.forms import ProductCUForm, ProductCUMForm, ProductDetailForm
 from catalog.models import Product
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductDetailForm
     template_name = "product_detail.html"
@@ -25,20 +27,41 @@ class ProductListView(ListView):
     template_name = "product_list.html"
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductCUForm
     template_name = "product_cu.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "product_delete.html"
     success_url = reverse_lazy("catalog:product_list")
+    permission_required = "catalog.can_delete_products"
+
+    def delete_view(self, object_id):
+        obj = get_object_or_404(Product, id=object_id)
+
+        if not self.request.user.groups.filter(name="moderators").exists() or self.object.owner != self.request.user:
+            return HttpResponseForbidden("У вас нет прав для удаления этого объекта.")
+
+        obj.delete()
+
+        return redirect("catalog:product_list")
+
+    def handle_no_permission(self):
+        return HttpResponseForbidden("У вас нет прав на удаление!")
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductCUForm
     template_name = "product_cu.html"
@@ -46,6 +69,20 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
+
+    def get_form_class(self):
+        user = self.request.user
+
+        if user == self.object.owner:
+            return ProductCUForm
+        if user.has_perms(
+            [
+                "catalog.can_unpublish_product",
+            ]
+        ):
+            return ProductCUMForm
+
+        raise PermissionDenied
 
 
 class ContactsFormView(FormView):

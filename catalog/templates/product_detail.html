@@ -21,8 +21,12 @@
                     <h2>{{ product.description }}</h2>
                     <h3 class="card-title pricing-card-title">{{ product.price }}</h3>
                     <p class="mb-0">Количество просмотров: {{ product.number_views }}</p>
-                    <a role="button" class="btn btn-primary" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
-                    <a role="button" class="btn btn-secondory" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                    {% if perms.catalog.can_unpublish_product or user == product.owner %}
+                        <a role="button" class="btn btn-primary" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                    {% endif %}
+                    {% if perms.catalog.can_delete_products or user == product.owner %}
+                        <a role="button" class="btn btn-secondory" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                    {% endif %}
                     <a role="button" class="btn btn-secondary" href="{% url 'catalog:product_list' %}">Назад</a>
                 </form>
             </div>
