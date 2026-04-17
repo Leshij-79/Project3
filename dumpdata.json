@@ -1,0 +1,138 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Телевизоры",
+        "description": "Категория телевизоры"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Мониторы",
+        "description": "Категория мониторы"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "name": "Категория 3",
+        "description": "Описание категории 3"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "name": "Категория 4",
+        "description": "Описание категории 4"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Телевизор 1",
+        "description": "Телевизор версия 1.0",
+        "photo_product": "",
+        "category": 1,
+        "price": 500.0,
+        "created_at": "2026-02-23",
+        "updated_at": "2026-02-23"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "Телевизор 2",
+        "description": "Телевизор версия 2.0",
+        "photo_product": "",
+        "category": 1,
+        "price": 1000.0,
+        "created_at": "2026-02-23",
+        "updated_at": "2026-02-23"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Монитор 1",
+        "description": "Монитор серия 1.5",
+        "photo_product": "",
+        "category": 2,
+        "price": 400.0,
+        "created_at": "2026-02-23",
+        "updated_at": "2026-02-23"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+        "name": "Монитор 2",
+        "description": "Монитор серия 2.5",
+        "photo_product": "",
+        "category": 2,
+        "price": 800.0,
+        "created_at": "2026-02-23",
+        "updated_at": "2026-02-23"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "Товар 1 категории 3",
+        "description": "Описание товара 1 категории 3",
+        "photo_product": "",
+        "category": 3,
+        "price": 300.0,
+        "created_at": "2026-02-24",
+        "updated_at": "2026-02-24"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+        "name": "Товар 2 категории 3",
+        "description": "Описание товара 2 категории 3",
+        "photo_product": "",
+        "category": 3,
+        "price": 400.0,
+        "created_at": "2026-02-24",
+        "updated_at": "2026-02-24"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 8,
+    "fields": {
+        "name": "Товар 1 категории 4",
+        "description": "Описание товара 1 категории 4",
+        "photo_product": "",
+        "category": 3,
+        "price": 800.0,
+        "created_at": "2026-02-24",
+        "updated_at": "2026-02-24"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 9,
+    "fields": {
+        "name": "Товар 2 категории 4",
+        "description": "Описание товара 2 категории 4",
+        "photo_product": "",
+        "category": 3,
+        "price": 1000.0,
+        "created_at": "2026-02-24",
+        "updated_at": "2026-02-24"
+    }
+}
+]
